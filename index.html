@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re-wear — Project Docs</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <!-- ══════════════════════════
+         SIDEBAR
+    ══════════════════════════ -->
+    <aside id="sidebar">
+
+        <!-- Brand -->
+        <div class="brand">
+            <h1>♻️ Re-wear</h1>
+            <p>CSI204 — Project Docs</p>
+        </div>
+
+        <!-- File Navigation -->
+        <div class="nav-group">
+            <div class="nav-label">เอกสาร</div>
+
+            <button class="file-btn active" id="btn-readme"
+                onclick="loadFile('README.md', 'btn-readme', 'README.md')">
+                📄 README.md
+            </button>
+
+            <button class="file-btn" id="btn-analysis"
+                onclick="loadFile('docs/analysis-design.md', 'btn-analysis', 'docs / analysis-design.md')">
+                📊 Analysis &amp; Design
+            </button>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-group">
+            <div class="nav-label">สารบัญ</div>
+            <ul id="toc-list">
+                <li>
+                    <a href="#" style="color:#d1d5db; pointer-events:none;">
+                        กำลังโหลด...
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </aside>
+
+    <!-- ══════════════════════════
+         MAIN CONTENT
+    ══════════════════════════ -->
+    <div id="main">
+
+        <!-- Breadcrumb topbar -->
+        <div id="topbar">
+            <span>📂 csi204-project</span>
+            <span style="color:#d1d5db;">/</span>
+            <span class="crumb" id="crumb-name">README.md</span>
+        </div>
+
+        <!-- Article area -->
+        <div id="content-wrap">
+            <div id="content" class="loading-msg">
+                ⏳ กำลังโหลดเนื้อหา...
+            </div>
+        </div>
+
+    </div>
+
+    <!-- App logic -->
+    <script src="app.js"></script>
+
+</body>
+</html>
