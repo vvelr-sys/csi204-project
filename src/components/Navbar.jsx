@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, Heart, Leaf, Menu, X, Search } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 import ProfileDropdown from './ProfileDropdown';
 
 export default function Navbar() {
@@ -8,82 +8,81 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
-    { name: 'หน้าแรก', path: '/' },
-    { name: 'ตู้เสื้อผ้าของฉัน', path: '/wardrobe' },
-    { name: 'คะแนนรักษ์โลก', path: '/eco-impact' },
-  ];
-
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-50 glassmorphism shadow-sm border-b border-earth-200/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
-          {/* Logo */}
+    <nav className="sticky top-0 z-50 bg-[#FAF7F2] border-b border-[#EAE5DB]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="flex justify-between h-20 items-center">
+          
+          {/* Logo - Serif Font styled like Figma */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center gap-2 font-display text-2xl font-bold text-moss hover:opacity-90 transition-opacity">
-              <Leaf className="h-7 w-7 text-sage-600 animate-pulse" />
-              <span className="tracking-wide text-earth-800">re<span className="text-sage-600 font-extrabold">-wear</span></span>
+            <Link to="/" className="font-serif text-2xl font-bold text-[#353A24] tracking-tight hover:opacity-90 transition-opacity">
+              Re-Wear
             </Link>
           </div>
 
-          {/* Desktop Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-md items-center justify-center px-6">
-            <div className="w-full relative">
+          {/* Desktop Menu - Matches Figma exactly */}
+          <div className="hidden md:flex items-center space-x-10">
+            <Link 
+              to="/" 
+              className={`text-sm font-semibold tracking-wide transition-all pb-1 ${
+                isActive('/') 
+                  ? 'text-[#353A24] border-b-2 border-[#353A24]' 
+                  : 'text-[#8B8B88] hover:text-[#353A24]'
+              }`}
+            >
+              Shop
+            </Link>
+            <a 
+              href="#" 
+              className="text-sm font-semibold tracking-wide text-[#8B8B88] hover:text-[#353A24] transition-all pb-1"
+            >
+              About
+            </a>
+            <Link 
+              to="/eco-impact" 
+              className={`text-sm font-semibold tracking-wide transition-all pb-1 ${
+                isActive('/eco-impact') 
+                  ? 'text-[#353A24] border-b-2 border-[#353A24]' 
+                  : 'text-[#8B8B88] hover:text-[#353A24]'
+              }`}
+            >
+              Sustainability
+            </Link>
+          </div>
+
+          {/* Desktop Search & Icons */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Figma-style Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#8B8B88]" />
               <input
                 type="text"
-                placeholder="ค้นหาเสื้อผ้ารักษ์โลก..."
-                className="w-full bg-earth-100/80 border border-earth-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 focus:border-transparent transition-all"
+                placeholder="Search unique pieces..."
+                className="w-56 bg-[#FAF7F2] border border-[#EAE5DB] hover:border-[#D0C9BC] focus:border-[#353A24] focus:outline-none rounded-full py-1.5 pl-10 pr-4 text-xs text-[#353A24] transition-all placeholder:text-[#8B8B88]"
               />
-              <Search className="absolute right-3.5 top-2.5 h-4.5 w-4.5 text-earth-400" />
             </div>
-          </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`relative py-2 text-sm font-medium transition-colors hover:text-sage-600 ${
-                  isActive(link.path) ? 'text-sage-700 font-semibold' : 'text-earth-600'
-                }`}
-              >
-                {link.name}
-                {isActive(link.path) && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sage-600 rounded-full" />
-                )}
-              </Link>
-            ))}
-          </div>
-
-          {/* Desktop Icons */}
-          <div className="hidden md:flex items-center space-x-6">
-            {/* Eco Points Indicator */}
-            <Link to="/eco-impact" className="flex items-center gap-1.5 px-3 py-1.5 bg-sage-50 border border-sage-200/50 rounded-full hover:bg-sage-100 transition-colors">
-              <Leaf className="h-4 w-4 text-sage-600" />
-              <span className="text-xs font-semibold text-sage-800">450 คะแนน</span>
+            {/* Shopping Cart Icon */}
+            <Link to="/wardrobe" className="text-[#353A24] hover:opacity-80 transition-opacity relative">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+              <span className="absolute -top-1.5 -right-1.5 bg-[#4B5E4A] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
             </Link>
 
-            <Link to="/wardrobe" className="text-earth-600 hover:text-sage-600 transition-colors relative">
-              <Heart className="h-5 w-5" />
-              <span className="absolute -top-1.5 -right-1.5 bg-clay-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
-            </Link>
-            
-            <Link to="#" className="text-earth-600 hover:text-sage-600 transition-colors relative">
-              <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1.5 -right-1.5 bg-sage-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
-            </Link>
-
+            {/* Profile Avatar */}
             <div className="relative">
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 text-earth-600 hover:text-sage-600 transition-colors focus:outline-none focus:ring-2 focus:ring-sage-500/50 rounded-full"
+                className="w-7 h-7 rounded-full overflow-hidden border border-[#EAE5DB] hover:ring-2 hover:ring-[#4B5E4A]/30 transition-all focus:outline-none"
               >
-                <div className="w-8 h-8 rounded-full bg-earth-200 border-2 border-sage-500/30 overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Avatar" className="w-full h-full object-cover" />
-                </div>
+                <img 
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover" 
+                />
               </button>
               
               <ProfileDropdown 
@@ -93,16 +92,11 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle */}
           <div className="flex md:hidden items-center space-x-4">
-            <Link to="/eco-impact" className="flex items-center gap-1 px-2.5 py-1 bg-sage-50 rounded-full">
-              <Leaf className="h-3.5 w-3.5 text-sage-600" />
-              <span className="text-[11px] font-semibold text-sage-800">450</span>
-            </Link>
-
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-earth-600 hover:text-sage-600 focus:outline-none p-1"
+              className="text-[#353A24] focus:outline-none p-1"
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -112,54 +106,62 @@ export default function Navbar() {
 
       {/* Mobile Drawer Menu */}
       {isOpen && (
-        <div className="md:hidden animate-fade-in">
-          <div className="px-2 pt-2 pb-4 space-y-1 bg-earth-50 border-b border-earth-200">
-            {/* Mobile Search */}
-            <div className="px-3 py-2">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="ค้นหาเสื้อผ้ารักษ์โลก..."
-                  className="w-full bg-earth-100 border border-earth-200 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                />
-                <Search className="absolute right-3.5 top-2.5 h-4.5 w-4.5 text-earth-400" />
-              </div>
+        <div className="md:hidden animate-fade-in bg-[#FAF7F2] border-t border-[#EAE5DB]">
+          <div className="px-4 pt-3 pb-6 space-y-3">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#8B8B88]" />
+              <input
+                type="text"
+                placeholder="Search unique pieces..."
+                className="w-full bg-[#FAF7F2] border border-[#EAE5DB] focus:border-[#353A24] focus:outline-none rounded-full py-1.5 pl-10 pr-4 text-xs text-[#353A24]"
+              />
             </div>
 
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block px-4 py-2.5 rounded-lg text-base font-medium transition-colors ${
-                  isActive(link.path)
-                    ? 'bg-sage-50 text-sage-800 font-semibold'
-                    : 'text-earth-600 hover:bg-earth-100 hover:text-earth-900'
-                }`}
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className={`block px-3 py-2 rounded-lg text-sm font-semibold ${
+                isActive('/') ? 'bg-[#EAE5DB]/40 text-[#353A24]' : 'text-[#8B8B88]'
+              }`}
+            >
+              Shop
+            </Link>
+            <a
+              href="#"
+              onClick={() => setIsOpen(false)}
+              className="block px-3 py-2 rounded-lg text-sm font-semibold text-[#8B8B88]"
+            >
+              About
+            </a>
+            <Link
+              to="/eco-impact"
+              onClick={() => setIsOpen(false)}
+              className={`block px-3 py-2 rounded-lg text-sm font-semibold ${
+                isActive('/eco-impact') ? 'bg-[#EAE5DB]/40 text-[#353A24]' : 'text-[#8B8B88]'
+              }`}
+            >
+              Sustainability
+            </Link>
+
+            <hr className="border-[#EAE5DB]" />
+
+            <div className="flex items-center justify-between px-3 pt-2">
+              <span className="text-xs text-[#8B8B88]">Profile Menu</span>
+              <button 
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsDropdownOpen(true);
+                }}
+                className="w-8 h-8 rounded-full overflow-hidden border border-[#EAE5DB]"
               >
-                {link.name}
-              </Link>
-            ))}
-
-            <hr className="my-2 border-earth-200" />
-
-            <Link
-              to="/profile"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-base font-medium text-earth-600 hover:bg-earth-100"
-            >
-              <User className="h-5 w-5" />
-              โปรไฟล์ & การตั้งค่า
-            </Link>
-            
-            <Link
-              to="/wardrobe"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-base font-medium text-earth-600 hover:bg-earth-100"
-            >
-              <Heart className="h-5 w-5" />
-              สินค้าที่บันทึกไว้ (3)
-            </Link>
+                <img 
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover" 
+                />
+              </button>
+            </div>
           </div>
         </div>
       )}
