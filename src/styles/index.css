@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-earth-50 text-earth-900 font-sans antialiased selection:bg-sage-200 selection:text-sage-900;
+  }
+}
+
+/* Custom premium scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-earth-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-earth-300 rounded-full hover:bg-earth-400 transition-colors;
+}
+
+/* Premium micro-interactions & animations */
+.hover-lift {
+  @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:shadow-earth-200/50;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 ease-out hover:ring-2 hover:ring-sage-300 hover:ring-offset-2;
+}
+
+.glassmorphism {
+  @apply bg-white/70 backdrop-blur-md border border-white/40;
+}
