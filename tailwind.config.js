@@ -7,56 +7,68 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Style Guide Theme Colors
+        primary: {
+          DEFAULT: '#5F6B4E', // Green
+          dark: '#4A543C',
+          light: '#DFE4D9',
+        },
+        secondary: {
+          DEFAULT: '#C57B57', // Clay/Rust
+          dark: '#AC6745',
+          light: '#F6ECE7',
+        },
+        tertiary: {
+          DEFAULT: '#F2E9DC', // Cream Background Accent
+          dark: '#E2D5C4',
+        },
+        neutral: {
+          DEFAULT: '#2D2D2A', // Charcoal text/elements
+          muted: '#8B8B88',
+          bg: '#FAF8F5',      // Soft warm base
+        },
+        
+        // Keep earth/sage/clay compatibility for other pages but map them to the new palette!
         earth: {
-          50: '#FDFBF7',
-          100: '#F9F6F0',
-          200: '#F0EAD6',
-          300: '#E1D7C1',
-          400: '#C5B498',
-          500: '#A38F6B',
-          600: '#8A7550',
-          700: '#6B5A3E',
-          800: '#4D412E',
-          900: '#2E271C',
+          50: '#FAF8F5',  // Neutral BG
+          100: '#F2E9DC', // Tertiary
+          200: '#EADFCF',
+          300: '#D0C2B0',
+          400: '#AFA08C',
+          500: '#8B8B88', // Neutral Muted
+          600: '#686865',
+          700: '#4D4D4A',
+          800: '#3A3A37',
+          900: '#2D2D2A', // Neutral
         },
         sage: {
-          50: '#F4F7F4',
-          100: '#E8ECE7',
-          200: '#CCD7CB',
-          300: '#A9BDA7',
-          400: '#84A180',
-          500: '#60855C',
-          600: '#4C6A48',
-          700: '#3D543A',
-          800: '#2D3F2B',
-          900: '#1D2A1C',
+          50: '#F6F7F5',
+          100: '#DFE4D9',
+          200: '#C2CBB8',
+          300: '#A4B296',
+          400: '#869874',
+          500: '#5F6B4E', // Primary
+          600: '#4A543C',
+          700: '#3A422F',
+          800: '#2A3022',
+          900: '#1A1E15',
         },
         clay: {
-          50: '#FAF5F2',
-          100: '#F4EAE3',
-          200: '#E7CEBE',
-          300: '#DAAD94',
-          400: '#CC8A67',
-          500: '#BA683C',
-          600: '#9B522F',
-          700: '#7B4125',
-          800: '#5A301B',
-          900: '#3B2012',
-        },
-        moss: {
-          light: '#8E9A68',
-          DEFAULT: '#606C38',
-          dark: '#283618',
-        },
-        sand: {
-          light: '#FEFAE0',
-          DEFAULT: '#DDA15E',
-          dark: '#BC6C25',
+          50: '#FAF6F4',
+          100: '#F6ECE7',
+          200: '#ECD2C4',
+          300: '#DFAB93',
+          400: '#D1815F',
+          500: '#C57B57', // Secondary
+          600: '#AC6745',
+          700: '#8E5133',
+          800: '#6B3C24',
+          900: '#472615',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'Outfit', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
+        sans: ['Hanken Grotesk', 'sans-serif'],
+        serif: ['Eb Garamond', 'serif'],
       },
     },
   },
