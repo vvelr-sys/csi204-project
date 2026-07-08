@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, User, Heart, Leaf, Menu, X, Search } from 'lucide-react';
+import ProfileDropdown from './ProfileDropdown';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
@@ -74,11 +76,21 @@ export default function Navbar() {
               <span className="absolute -top-1.5 -right-1.5 bg-sage-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
             </Link>
 
-            <Link to="/profile" className="flex items-center gap-2 text-earth-600 hover:text-sage-600 transition-colors">
-              <div className="w-8 h-8 rounded-full bg-earth-200 border-2 border-sage-500/30 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Avatar" className="w-full h-full object-cover" />
-              </div>
-            </Link>
+            <div className="relative">
+              <button 
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 text-earth-600 hover:text-sage-600 transition-colors focus:outline-none focus:ring-2 focus:ring-sage-500/50 rounded-full"
+              >
+                <div className="w-8 h-8 rounded-full bg-earth-200 border-2 border-sage-500/30 overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Avatar" className="w-full h-full object-cover" />
+                </div>
+              </button>
+              
+              <ProfileDropdown 
+                isOpen={isDropdownOpen} 
+                onClose={() => setIsDropdownOpen(false)} 
+              />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
