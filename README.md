@@ -1,16 +1,61 @@
-# React + Vite
+# Re-Wear Collective 🌿
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+แพลตฟอร์มส่งต่อและซื้อขายเสื้อผ้ามือสองเพื่อส่งเสริมระบบเศรษฐกิจหมุนเวียน (Circular Economy) และลดขยะแฟชั่น โครงการตั้งต้นสำหรับการเรียนรู้วิชา **Systems Analysis & Design (SAD)**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠️ รายละเอียดการเซ็ตอัปและฟังก์ชันที่มีในโปรเจกต์
 
-## React Compiler
+1. **Vite + React (JavaScript)**: โครงสร้างตั้งต้นที่มีความรวดเร็วและใช้คอมโพเนนต์ในการจัดการหน้าจอ
+2. **Tailwind CSS v3 (Earth Tone Theme)**: คุมโทนสีตาม **Style Guide** ของแบรนด์อย่างเคร่งครัด:
+   - **`Primary`**: สีเขียวใบไม้ขุ่น `#5F6B4E`
+   - **`Secondary`**: สีส้มอิฐขัดมัน `#C57B57`
+   - **`Tertiary`**: สีครีมละมุน `#F2E9DC`
+   - **`Neutral`**: สีถ่านชาโคลเข้ม `#2D2D2A`
+   - **`Neutral Base`**: สีพื้นหลังขาวอุ่น `#FAF8F5`
+   - **`Fonts`**: หัวข้อฟอนต์ Serif **`Eb Garamond`** และเนื้อหาฟอนต์ **`Hanken Grotesk`**
+3. **React Router DOM**: ตั้งค่าหน้าสำหรับการนำทาง (Routing) หลักๆ ไว้แล้ว:
+   - `/` - หน้าแรก (Homepage & Search ตาม Figma หน้า 2)
+   - `/profile` - ตั้งค่าโปรไฟล์ผู้ใช้
+   - `/orders` - ประวัติการสั่งซื้อพัสดุ
+   - `/wardrobe` - ตู้เสื้อผ้าจำลอง & รายการโปรด
+   - `/eco-impact` - แดชบอร์ดคะแนนรักษ์โลก (Eco-Impact Scorecard)
+   - `/payment` - ช่องทางการชำระเงิน
+4. **SAD Demo Role Switcher (จำลองการแบ่งสิทธิ์ผู้ใช้)**:
+   - มีแผงควบคุมลอยตัวที่มุมขวาล่างเพื่อสลับสถานะบัญชีระหว่าง **ลูกค้า (Customer)**, **พนักงาน (Staff)**, และ **ผู้ดูแลระบบ (Admin)**
+   - เมื่อสลับบทบาท ระบบจะปรับเปลี่ยนเมนูนำทาง (Navbar) และข้อมูลส่วนตัว (Profile Dropdown) ให้สอดคล้องกันโดยอัตโนมัติ
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🚀 วิธีเปิดใช้งานโปรเจกต์ภายในเครื่อง (Local Run)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+1. ติดตั้ง Dependencies พื้นฐานทั้งหมด:
+   ```bash
+   npm install
+   ```
+2. เริ่มเซิร์ฟเวอร์สำหรับพัฒนาในเครื่อง:
+   ```bash
+   npm run dev
+   ```
+3. เปิดบราวเซอร์ไปที่ลิงก์: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🐙 วิธีนำโค้ดขึ้นระบบควบคุมเวอร์ชันบน GitHub (สำหรับทำงานกลุ่ม)
+
+โค้ดทั้งหมดได้รับการบันทึกคอมมิต (Commit) ไว้ใน Git ภายในเครื่องเรียบร้อยแล้ว หากต้องการผลักดันขึ้นไปยัง GitHub เพื่อแบ่งปันกับกลุ่มเพื่อน ให้ทำตามขั้นตอนดังนี้ครับ:
+
+1. ล็อกอินเข้าเว็บไซต์ **GitHub** และสร้าง Repository ใหม่ ตั้งชื่อว่า `re-wear` (ห้ามเลือกติ๊กถูกสร้างไฟล์ `.gitignore` หรือ `README` บนเว็บใหม่ เพราะเรามีเตรียมไว้แล้ว)
+2. คัดลอก URL ของ Repository นั้น (เช่น `https://github.com/USERNAME/re-wear.git`)
+3. เปิดหน้า Terminal ในคอมพิวเตอร์ของคุณแล้วรันคำสั่งเหล่านี้:
+   ```bash
+   # 1. เชื่อมต่อ Git ท้องถิ่นเข้ากับคลาวด์ GitHub
+   git remote add origin https://github.com/USERNAME/re-wear.git
+   
+   # 2. ตั้งชื่อกิ่งหลักเป็น main
+   git branch -M main
+   
+   # 3. อัปโหลดโค้ดทั้งหมดขึ้น GitHub
+   git push -u origin main
+   ```
+4. เข้าไปที่เมนู **Settings** -> **Collaborators** -> **Add People** บนหน้าเว็บ GitHub เพื่อเพิ่มเพื่อนในกลุ่มเข้ามาทำงานต่อร่วมกันได้เลยครับ!
