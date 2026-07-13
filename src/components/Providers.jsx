@@ -14,7 +14,7 @@ export default function Providers({ children }) {
 
   return (
     <CartProvider>
-      <UserProvider currentUser={currentUser}>
+      <UserProvider currentUser={currentUser} setCurrentUser={setCurrentUser}>
         {children}
         
         {/* ==================== Interactive SAD Demo Role Switcher ==================== */}

@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import { Eye, Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { mockProducts } from '../../data/products';
 import QuickViewModal from './QuickViewModal';
 import { useCart } from '../../context/CartContext';
+import { useCurrentUser } from '../../context/UserContext';
 
 const FILTERS = ['All Pieces', 'Vintage Denim', 'Y2K Shirts', 'Jackets'];
 
@@ -27,6 +29,7 @@ export default function ProductCollection() {
   const [activeFilter, setActiveFilter] = useState('All Pieces');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
+  const { currentUser } = useCurrentUser();
 
   const filteredProducts = useMemo(
     () =>
@@ -50,10 +53,10 @@ export default function ProductCollection() {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`text-xs font-semibold px-5 py-2.5 rounded-full transition-all border ${
+                className={`text-xs font-semibold px-6 py-2 rounded-full transition-all border ${
                   activeFilter === filter
-                    ? 'bg-primary border-primary text-white shadow-md'
-                    : 'bg-white border-[#EAE5DB] text-[#2D2D2A] hover:bg-tertiary/40'
+                    ? 'bg-[#4A543C] border-[#4A543C] text-white'
+                    : 'bg-transparent border-[#EAE5DB] text-[#8B8B88] hover:border-[#4A543C] hover:text-[#4A543C]'
                 }`}
               >
                 {filter}
@@ -77,18 +80,27 @@ export default function ProductCollection() {
           {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={itemVariants} className="flex flex-col space-y-4 group relative">
               <Link href={`/product/${product.id}`} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#FAF7F2] border border-[#EAE5DB]/60 shadow-premium block cursor-pointer">
-                <img
+                <Image
                   src={product.image}
                   alt={product.title}
-                  className="w-full h-full object-cover transition-opacity duration-700 ease-in-out group-hover:opacity-0"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-opacity duration-700 ease-in-out group-hover:opacity-0"
                 />
-                <img
+                <Image
                   src={product.hoverImage}
                   alt={`${product.title} model view`}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 scale-102 group-hover:scale-105"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 scale-102 group-hover:scale-105"
                 />
                 {product.badge && (
-                  <span className="absolute top-5 left-5 text-[9px] font-bold tracking-wider uppercase px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-[#2D2D2A] border border-[#EAE5DB]/65 shadow-sm z-10">
+                  <span className={`absolute top-5 left-5 text-[9px] font-bold tracking-wider uppercase px-3.5 py-1.5 rounded-full shadow-sm z-10 ${
+                    product.badge.toLowerCase().includes('rare') ? 'bg-[#F2D7C4] text-[#8E5133] border border-[#ECD2C4]' :
+                    product.badge.toLowerCase().includes('sustainable') ? 'bg-[#DFE4D9] text-[#4A543C] border border-[#C2CBB8]' :
+                    product.badge.toLowerCase().includes('limited') ? 'bg-[#F6ECE7] text-[#AC6745] border border-[#ECD2C4]' :
+                    'bg-white/95 text-[#2D2D2A] border border-[#EAE5DB]/65'
+                  }`}>
                     {product.badge}
                   </span>
                 )}
@@ -113,7 +125,7 @@ export default function ProductCollection() {
               <div className="flex justify-between items-start pt-1 font-sans">
                 <div className="space-y-1">
                   <Link href={`/product/${product.id}`} className="block">
-                    <h3 className="font-semibold text-base text-[#2D2D2A] leading-snug group-hover:text-primary transition-colors">
+                    <h3 className="font-serif font-bold text-lg text-[#2D2D2A] leading-snug group-hover:text-[#5F6B4E] transition-colors">
                       {product.title}
                     </h3>
                   </Link>
@@ -126,14 +138,16 @@ export default function ProductCollection() {
                 </span>
               </div>
 
-              <button
-                onClick={() => {
-                  addToCart(product);
-                }}
-                className="btn-slide-outline w-full bg-transparent text-[#2D2D2A] border border-[#2D2D2A] font-semibold text-xs py-3.5 rounded-xl uppercase tracking-wider hover:bg-[#2D2D2A] hover:text-[#FAF8F5] transition-colors"
-              >
-                ADD TO CART
-              </button>
+              {currentUser?.role === 'customer' && (
+                <button
+                  onClick={() => {
+                    addToCart(product);
+                  }}
+                  className="w-full bg-transparent text-[#8B8B88] border border-[#EAE5DB] hover:border-[#5F6B4E] hover:text-[#5F6B4E] font-semibold text-[10px] py-3 rounded-none uppercase tracking-wider transition-colors mt-2"
+                >
+                  ADD TO CART
+                </button>
+              )}
             </motion.div>
           ))}
         </motion.div>

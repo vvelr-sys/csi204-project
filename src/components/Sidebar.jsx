@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { User, History, CreditCard, Heart, Leaf, LogOut } from 'lucide-react';
 
@@ -61,11 +62,13 @@ export default function Sidebar({ currentUser = DEFAULT_USER }) {
     <aside className="bg-white rounded-2xl border border-earth-200/60 p-5 shadow-sm space-y-6">
       {/* Quick Profile Summary — driven by currentUser prop */}
       <div className="flex items-center gap-4 pb-5 border-b border-earth-100">
-        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-sage-500/20">
-          <img 
+        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-sage-500/20">
+          <Image 
             src={avatarSrc} 
             alt={`${currentUser.name} avatar`} 
-            className="w-full h-full object-cover"
+            fill
+            sizes="48px"
+            className="object-cover"
           />
         </div>
         <div>

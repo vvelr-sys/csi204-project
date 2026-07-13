@@ -1,13 +1,16 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import { X, Trash2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 
 export default function CartDrawer() {
   const { isCartOpen, closeCart, cartItems, removeFromCart, cartTotal } = useCart();
+  const router = useRouter();
 
   return (
     <AnimatePresence>
@@ -64,8 +67,8 @@ export default function CartDrawer() {
               ) : (
                 cartItems.map((item) => (
                   <div key={item.id} className="flex gap-4">
-                    <Link href={`/product/${item.id}`} onClick={closeCart} className="w-24 h-32 shrink-0 bg-[#EAE5DB]/40 rounded-xl overflow-hidden block">
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover mix-blend-multiply" />
+                    <Link href={`/product/${item.id}`} onClick={closeCart} className="relative w-24 h-32 shrink-0 bg-[#EAE5DB]/40 rounded-xl overflow-hidden block">
+                      <Image src={item.image} alt={item.title} fill sizes="96px" className="object-cover mix-blend-multiply" />
                     </Link>
                     <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
@@ -110,6 +113,10 @@ export default function CartDrawer() {
                   </div>
                 </div>
                 <button 
+                  onClick={() => {
+                    closeCart();
+                    router.push('/payment');
+                  }}
                   className="w-full py-4 rounded-xl bg-[#2D2D2A] hover:bg-[#1A1A18] text-white text-xs font-semibold uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                 >
                   Proceed to Checkout <ArrowRight className="h-4 w-4" />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
 import { User, Mail, Phone, MapPin, Shield, Check } from 'lucide-react';
 
@@ -43,10 +44,12 @@ export default function ProfileSettings() {
             {/* Profile Pic Upload */}
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-sage-500/20 shadow-md">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" 
                   alt="Avatar big" 
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="96px"
+                  className="object-cover"
                 />
               </div>
               <div className="text-center sm:text-left space-y-2">

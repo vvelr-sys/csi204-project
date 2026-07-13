@@ -1,19 +1,19 @@
-# 📊 เอกสาร Analysis & Design
+# เอกสาร Analysis & Design
 
-## 📑 สารบัญ (Table of Contents)
+## สารบัญ (Table of Contents)
 - [1. ภาพรวมระบบ (System Overview)](#1-ภาพรวมระบบ-system-overview)
 - [2. ความต้องการของระบบ (Requirement Analysis)](#2-ความต้องการของระบบ-requirement-analysis)
-  - [2.1 Functional Requirements](#21-functional-requirements)
-  - [2.2 Non-Functional Requirements (SLA Targets)](#22-non-functional-requirements-sla-targets)
-  - [2.3 Use Case Diagram](#23-use-case-diagram)
+ - [2.1 Functional Requirements](#21-functional-requirements)
+ - [2.2 Non-Functional Requirements (SLA Targets)](#22-non-functional-requirements-sla-targets)
+ - [2.3 Use Case Diagram](#23-use-case-diagram)
 - [3. การจำลองกลุ่มผู้ใช้งาน (Persona Design)](#3-การจำลองกลุ่มผู้ใช้งาน-persona-design)
 - [4. สถาปัตยกรรมระบบ (System Architecture)](#4-สถาปัตยกรรมระบบ-system-architecture)
 - [5. โครงสร้างฐานข้อมูล (Database Design)](#5-โครงสร้างฐานข้อมูล-database-design)
-  - [5.1 Data Schema (LocalStorage JSON)](#51-data-schema-localstorage-json)
-  - [5.2 Class Diagram](#52-class-diagram)
-  - [5.3 Mermaid ER Diagram](#53-mermaid-er-diagram)
+ - [5.1 Data Schema (LocalStorage JSON)](#51-data-schema-localstorage-json)
+ - [5.2 Class Diagram](#52-class-diagram)
+ - [5.3 Mermaid ER Diagram](#53-mermaid-er-diagram)
 - [6. Flow การทำงานหลัก (Sequence)](#6-flow-การทำงานหลัก-sequence)
-  - [6.1 Sequence Diagram](#61-sequence-diagram)
+ - [6.1 Sequence Diagram](#61-sequence-diagram)
 - [7. หลักการออกแบบที่นำมาใช้ (Design Principles)](#7-หลักการออกแบบที่นำมาใช้-design-principles)
 
 ---
@@ -54,21 +54,21 @@
 
 ## 3. การจำลองกลุ่มผู้ใช้งาน (Persona Design)
 
-### 3.1 👧 Persona 1: Customer (ลูกค้า)
+### 3.1 Persona 1: Customer (ลูกค้า)
 - **ชื่อ:** ฟ้าใส สายรักษ์โลก (อายุ 22 ปี, นักศึกษา)
 - **Bio:** ชื่นชอบการแต่งตัวและแฟชั่นวินเทจ ใส่ใจสิ่งแวดล้อม ชอบซื้อเสื้อผ้ามือสองเพราะราคาถูกและมีสไตล์ไม่ซ้ำใคร
 - **Goals:** ต้องการแพลตฟอร์มที่ค้นหาเสื้อผ้ามือสองสภาพดีได้ง่าย, ขั้นตอนสั่งซื้อไม่ซับซ้อน, ติดตามสถานะของได้
 - **Pain Points:** ร้านทั่วไปรายละเอียดสินค้าไม่ชัดเจน, สั่งซื้อยุ่งยาก
 - **Scenario:** ฟ้าใสเข้ามาหาเสื้อแจ็คเก็ตมือสอง ค้นหาเจอ หยิบลงตะกร้า สั่งซื้อ ชำระเงิน และติดตามสถานะ
 
-### 3.2 👨💼 Persona 2: Staff (พนักงาน)
+### 3.2 Persona 2: Staff (พนักงาน)
 - **ชื่อ:** ก้องเกียรติ ขยันทำงาน (อายุ 26 ปี, พนักงานดูแลร้าน)
 - **Bio:** รับหน้าที่จัดการออเดอร์ อัปเดตสต็อก และดูแลความเรียบร้อยของสินค้า
 - **Goals:** อัปเดตสถานะสินค้าและคำสั่งซื้อได้อย่างรวดเร็ว, ตรวจสอบการชำระเงินได้ง่าย
 - **Pain Points:** ระบบจัดการออเดอร์หลายขั้นตอนทำให้ล่าช้า
 - **Scenario:** ก้องเกียรติล็อกอินเข้าระบบ ตรวจสอบคำสั่งซื้อใหม่ ยืนยันการชำระเงิน และอัปเดตสถานะจัดส่ง
 
-### 3.3 👑 Persona 3: Administrator (ผู้ดูแลระบบ)
+### 3.3 Persona 3: Administrator (ผู้ดูแลระบบ)
 - **ชื่อ:** วีระ ผู้จัดการ (อายุ 34 ปี, ผู้ดูแลระบบ)
 - **Bio:** ต้องการให้ระบบทำงานเสถียรและติดตามยอดขายได้
 - **Goals:** ดูภาพรวมของระบบผ่าน Dashboard, จัดการสิทธิ์พนักงาน
@@ -84,22 +84,22 @@
 
 ```mermaid
 graph TD
-    subgraph Client["🖥️ Frontend (Next.js)"]
-        A[Customer View]
-        B[Staff / Admin Dashboard]
-    end
+ subgraph Client["️ Frontend (Next.js)"]
+ A[Customer View]
+ B[Staff / Admin Dashboard]
+ end
 
-    subgraph Backend["⚙️ Backend (Node.js)"]
-        C[Logic & Routing API]
-    end
+ subgraph Backend["️ Backend (Node.js)"]
+ C[Logic & Routing API]
+ end
 
-    subgraph Data["💾 Database (Mockup)"]
-        D[(Local Storage)]
-    end
+ subgraph Data[" Database (Mockup)"]
+ D[(Local Storage)]
+ end
 
-    A --> C
-    B --> C
-    C --> D
+ A --> C
+ B --> C
+ C --> D
 ```
 
 ### 4.1 Frontend Architecture (ส่วนที่ผู้ใช้งานโต้ตอบกับระบบ)
@@ -108,9 +108,9 @@ graph TD
 - **รูปแบบสถาปัตยกรรม**: Component-Based Architecture / Single Page Application (SPA)
 - **เทคโนโลยีหลัก**: Next.js (React Framework)
 - **สิ่งที่พิจารณาเป็นพิเศษ**: 
-  - *UX/UI*: รองรับ Responsive Design และ Mobile First เนื่องจากผู้ซื้อเสื้อผ้าส่วนใหญ่ใช้งานผ่านโทรศัพท์มือถือ
-  - *Security*: ป้องกันการดึงข้อมูลส่วนตัว และใช้ JWT / Cookies ในการเก็บเซสชัน
-  - *Scalability*: เตรียมความพร้อมใช้งาน CDN และ Caching ในการโหลดรูปภาพสินค้าที่มีจำนวนมาก
+ - *UX/UI*: รองรับ Responsive Design และ Mobile First เนื่องจากผู้ซื้อเสื้อผ้าส่วนใหญ่ใช้งานผ่านโทรศัพท์มือถือ
+ - *Security*: ป้องกันการดึงข้อมูลส่วนตัว และใช้ JWT / Cookies ในการเก็บเซสชัน
+ - *Scalability*: เตรียมความพร้อมใช้งาน CDN และ Caching ในการโหลดรูปภาพสินค้าที่มีจำนวนมาก
 
 ### 4.2 Backend Architecture (ส่วนประมวลผลหลักของระบบ)
 - **การจัดการ Business Logic**: การคำนวณยอดชำระ, อัปเดตสถานะการจองสต็อกสินค้า (เนื่องจากเสื้อผ้ามือสองมีเพียง 1 ชิ้นต่อชิ้น), ตรวจสอบสิทธิ์การทำงาน
@@ -118,15 +118,15 @@ graph TD
 - **รูปแบบสถาปัตยกรรม**: Monolithic Architecture ในเฟสเริ่มต้น เพื่อความรวดเร็วในการพัฒนาต้นแบบและมีความคล่องตัวสูง
 - **เทคโนโลยีหลัก**: Node.js + Express
 - **สิ่งที่พิจารณาเป็นพิเศษ**:
-  - *API Architecture*: ออกแบบในรูปแบบ REST API เพื่อรับส่งข้อมูล JSON ระหว่างหน้าเว็บและเซิร์ฟเวอร์
-  - *DevOps*: ใช้ GitHub Actions ทำระบบ CI/CD และควบคุมเวอร์ชันผ่าน Git / GitHub
+ - *API Architecture*: ออกแบบในรูปแบบ REST API เพื่อรับส่งข้อมูล JSON ระหว่างหน้าเว็บและเซิร์ฟเวอร์
+ - *DevOps*: ใช้ GitHub Actions ทำระบบ CI/CD และควบคุมเวอร์ชันผ่าน Git / GitHub
 
 ### 4.3 Database Architecture (ระบบจัดเก็บข้อมูล)
 - **การจัดการข้อมูล**: เก็บข้อมูลผู้ใช้ (Users), สินค้าเสื้อผ้ามือสอง (Products), คำสั่งซื้อ (Orders), และประวัติการทำรายการ (Payments)
 - **รูปแบบสถาปัตยกรรม**: จำลองรูปแบบฐานข้อมูลด้วย Local Storage โดยเซฟในรูปแบบ JSON Object เพื่อให้รองรับการพัฒนารวดเร็ว (Rapid Prototyping)
 - **เทคโนโลยีหลัก**: Local Storage (และเตรียมย้ายไปใช้ Relational Database เช่น MySQL/PostgreSQL ในการผลิตจริง)
 - **สิ่งที่พิจารณาเป็นพิเศษ**:
-  - *Database Design*: ทำ Normalization เพื่อลดความซ้ำซ้อนของข้อมูล และออกแบบ Backup & Recovery เผื่อกรณีข้อมูลในเครื่องผู้ใช้สูญหาย
+ - *Database Design*: ทำ Normalization เพื่อลดความซ้ำซ้อนของข้อมูล และออกแบบ Backup & Recovery เผื่อกรณีข้อมูลในเครื่องผู้ใช้สูญหาย
 
 ---
 
@@ -138,16 +138,16 @@ graph TD
 
 ```json
 {
-  "users": [
-    { "id": "U01", "role": "customer", "name": "ฟ้าใส", "email": "fah@email.com" },
-    { "id": "S01", "role": "staff", "name": "ก้องเกียรติ", "email": "staff@email.com" }
-  ],
-  "products": [
-    { "id": "P01", "name": "Vintage Denim Jacket", "price": 450, "stock": 1, "status": "Available" }
-  ],
-  "orders": [
-    { "id": "O01", "customerId": "U01", "status": "Pending", "totalAmount": 450 }
-  ]
+ "users": [
+ { "id": "U01", "role": "customer", "name": "ฟ้าใส", "email": "fah@email.com" },
+ { "id": "S01", "role": "staff", "name": "ก้องเกียรติ", "email": "staff@email.com" }
+ ],
+ "products": [
+ { "id": "P01", "name": "Vintage Denim Jacket", "price": 450, "stock": 1, "status": "Available" }
+ ],
+ "orders": [
+ { "id": "O01", "customerId": "U01", "status": "Pending", "totalAmount": 450 }
+ ]
 }
 ```
 
@@ -157,39 +157,39 @@ graph TD
 ### 5.3 Mermaid ER Diagram
 ```mermaid
 erDiagram
-    User ||--o| Customer : "is a"
-    User ||--o| Staff : "is a"
-    User ||--o| Admin : "is a"
-    Customer ||--o{ Order : places
-    Customer ||--o| Cart : has
-    Cart ||--o{ CartItem : contains
-    Order ||--|{ OrderItem : contains
-    Product ||--o{ OrderItem : "included in"
-    Product ||--o{ CartItem : "included in"
-    Order ||--o| Payment : has
+ User ||--o| Customer : "is a"
+ User ||--o| Staff : "is a"
+ User ||--o| Admin : "is a"
+ Customer ||--o{ Order : places
+ Customer ||--o| Cart : has
+ Cart ||--o{ CartItem : contains
+ Order ||--|{ OrderItem : contains
+ Product ||--o{ OrderItem : "included in"
+ Product ||--o{ CartItem : "included in"
+ Order ||--o| Payment : has
 
-    User {
-        string userid
-        string fullName
-        string email
-        string password
-    }
-    Product {
-        string productid
-        string productname
-        number price
-        int stock
-    }
-    Order {
-        string orderid
-        string userid
-        number totalAmount
-        string orderStatus
-    }
-    Cart {
-        string cartid
-        string userid
-    }
+ User {
+ string userid
+ string fullName
+ string email
+ string password
+ }
+ Product {
+ string productid
+ string productname
+ number price
+ int stock
+ }
+ Order {
+ string orderid
+ string userid
+ number totalAmount
+ string orderStatus
+ }
+ Cart {
+ string cartid
+ string userid
+ }
 ```
 
 ---
@@ -219,4 +219,22 @@ erDiagram
 
 ## 8. สรุป (Conclusion)
 
-> 📌 **Note:** เอกสารนี้แสดงการวิเคราะห์และออกแบบระบบเบื้องต้น ซึ่งจะถูกนำไปใช้เป็นแนวทางในการพัฒนาระบบจริงในขั้นตอนถัดไป
+ระบบ **Re-wear** ได้รับการออกแบบและพัฒนาขึ้นโดยมีแนวคิดหลักด้านความยั่งยืน (Circular Fashion) เป็นจุดศูนย์กลาง ผ่านกระบวนการวิเคราะห์และออกแบบที่ครอบคลุมตั้งแต่การกำหนดความต้องการ การออกแบบสถาปัตยกรรม ไปจนถึงการพัฒนาต้นแบบ (Prototype) ที่ใช้งานได้จริง
+
+### ผลลัพธ์ที่ได้จากโครงการ
+
+| ด้าน | ผลลัพธ์ |
+|---|---|
+| **Functional Requirements** | ครบ 8 รายการ (F-01 ถึง F-08) |
+| **จำนวนหน้าที่พัฒนา** | 8 หน้า (Homepage, Product, Search, Orders, Wardrobe, Profile, Payment, Eco-Impact) |
+| **Role-based System** | จำลองการทำงานของ 3 บทบาท (Customer, Staff, Admin) ผ่าน SAD Role Switcher |
+| **Design Principles** | นำมาประยุกต์ใช้ 9 หลักการ (SoC, SRP, Modularity, Loose Coupling ฯลฯ) |
+| **เทคโนโลยีหลัก** | Next.js 15 (App Router), Tailwind CSS, Lucide React |
+
+### ข้อจำกัดและแนวทางพัฒนาต่อในอนาคต
+
+- **ระบบยืนยันตัวตน (Authentication):** ปัจจุบันจำลองสิทธิ์ผู้ใช้ผ่าน Role Switcher เท่านั้น แนวทางต่อไปคือนำ JWT / NextAuth.js มาใช้งานจริง
+- **ฐานข้อมูล:** ข้อมูลสินค้าและออเดอร์เป็นแบบ Mock (Static Data) แนวทางต่อไปคือเชื่อมต่อกับ Backend API และ Database จริง เช่น PostgreSQL
+- **ระบบชำระเงิน:** ปัจจุบันเป็นแบบ Mockup แนวทางต่อไปคือผนวกกับ Payment Gateway เช่น Stripe หรือ Omise
+
+> **Note:** เอกสารนี้แสดงการวิเคราะห์และออกแบบระบบเบื้องต้น ซึ่งจะถูกนำไปใช้เป็นแนวทางในการพัฒนาระบบจริงในขั้นตอนถัดไป สร้างด้วย ️ โดย **กลุ่ม Re-wear** สำหรับวิชา CSI204

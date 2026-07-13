@@ -2,19 +2,23 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { Search, Menu, X, ShieldAlert, Cpu } from 'lucide-react';
 import ProfileDropdown from './ProfileDropdown';
 import { mockProducts } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useCurrentUser } from '../context/UserContext';
 
-export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'customer' } }) {
+export default function Navbar() {
+  const { currentUser } = useCurrentUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchRef = useRef(null);
   const pathname = usePathname();
+  const router = useRouter();
   const { cartItems, toggleCart } = useCart();
 
   const isActive = (path) => pathname === path;
@@ -29,6 +33,15 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchFocused(false);
+      setSearchQuery('');
+    }
+  };
 
   const searchResults = searchQuery.trim() 
     ? mockProducts.filter(p => 
@@ -89,39 +102,41 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="flex justify-between h-20 items-center">
           
-          {/* Logo - Serif Font Eb Garamond */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="font-serif text-2xl font-semibold text-[#2D2D2A] tracking-tight hover:opacity-90 transition-opacity">
-              Re-Wear
-            </Link>
-          </div>
+          <div className="flex items-center space-x-8 lg:space-x-12">
+            {/* Logo - Serif Font Eb Garamond */}
+            <div className="flex-shrink-0 flex items-center">
+              <Link href="/" className="font-serif text-2xl lg:text-3xl font-bold text-[#4A543C] tracking-tight hover:opacity-90 transition-opacity">
+                Re-Wear
+              </Link>
+            </div>
 
-          {/* Desktop Menu - Dynamically loaded links based on currentUser.role */}
-          <div className="hidden md:flex items-center space-x-10">
-            {navLinks.map((link, index) => {
-              const isExternal = link.path === '#';
-              const LinkComponent = isExternal ? 'a' : Link;
-              const linkProps = isExternal ? { href: '#' } : { href: link.path };
-              return (
-                <LinkComponent
-                  key={index}
-                  {...linkProps}
-                  className={`text-sm font-semibold tracking-wide transition-all pb-1 font-sans ${
-                    isActive(link.path) && link.path !== '#'
-                      ? 'text-[#2D2D2A] border-b-2 border-[#2D2D2A]' 
-                      : 'text-[#8B8B88] hover:text-[#2D2D2A]'
-                  }`}
-                >
-                  {link.name}
-                </LinkComponent>
-              );
-            })}
+            {/* Desktop Menu - Dynamically loaded links based on currentUser.role */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navLinks.map((link, index) => {
+                const isExternal = link.path === '#';
+                const LinkComponent = isExternal ? 'a' : Link;
+                const linkProps = isExternal ? { href: '#' } : { href: link.path };
+                return (
+                  <LinkComponent
+                    key={index}
+                    {...linkProps}
+                    className={`text-xs font-semibold tracking-wide transition-all pb-1 font-sans ${
+                      isActive(link.path) && link.path !== '#'
+                        ? 'text-[#2D2D2A] border-b-2 border-[#2D2D2A]' 
+                        : 'text-[#8B8B88] hover:text-[#2D2D2A]'
+                    }`}
+                  >
+                    {link.name}
+                  </LinkComponent>
+                );
+              })}
+            </div>
           </div>
 
           {/* Desktop Search & Icons */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Search Bar */}
-            <div className="relative" ref={searchRef}>
+            <form className="relative" ref={searchRef} onSubmit={handleSearchSubmit}>
               <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#8B8B88]" />
               <input
                 type="text"
@@ -150,7 +165,9 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
                           }}
                           className="flex items-center gap-3 p-2 hover:bg-[#F2E9DC]/60 rounded-xl transition-colors group"
                         >
-                          <img src={p.image} alt={p.title} className="w-10 h-10 rounded-lg object-cover mix-blend-multiply bg-[#EAE5DB]" />
+                          <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-[#EAE5DB]">
+                            <Image src={p.image} alt={p.title} fill sizes="40px" className="object-cover mix-blend-multiply" />
+                          </div>
                           <div>
                             <p className="text-xs font-semibold text-[#2D2D2A] line-clamp-1 group-hover:text-[#4A543C]">{p.title}</p>
                             <p className="text-[10px] text-[#8B8B88] font-bold">${p.price}</p>
@@ -165,7 +182,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
                   )}
                 </div>
               )}
-            </div>
+            </form>
 
             {/* Shopping Cart Icon (Only relevant for Customer) */}
             {currentUser.role === 'customer' && (
@@ -185,9 +202,9 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
             <div className="relative">
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-7 h-7 rounded-full overflow-hidden border border-[#F2E9DC] hover:ring-2 hover:ring-[#5F6B4E]/30 transition-all focus:outline-none"
+                className="w-7 h-7 rounded-full overflow-hidden border border-[#F2E9DC] hover:ring-2 hover:ring-[#5F6B4E]/30 transition-all focus:outline-none relative"
               >
-                <img 
+                <Image 
                   src={
                     currentUser.role === 'admin'
                       ? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100' // Man avatar for Admin
@@ -196,14 +213,15 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
                         : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100' // Alex (Customer)
                   } 
                   alt="Avatar" 
-                  className="w-full h-full object-cover" 
+                  fill
+                  sizes="28px"
+                  className="object-cover" 
                 />
               </button>
               
               <ProfileDropdown 
                 isOpen={isDropdownOpen} 
                 onClose={() => setIsDropdownOpen(false)} 
-                currentUser={currentUser}
               />
             </div>
           </div>
@@ -225,14 +243,16 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
         <div className="md:hidden animate-fade-in bg-[#FAF8F5] border-t border-[#F2E9DC]">
           <div className="px-4 pt-3 pb-6 space-y-3 font-sans">
             {/* Search */}
-            <div className="relative">
+            <form className="relative" onSubmit={handleSearchSubmit}>
               <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#8B8B88]" />
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search unique pieces..."
                 className="w-full bg-[#F2E9DC] border border-[#F2E9DC] focus:border-[#2D2D2A] focus:outline-none rounded-full py-1.5 pl-10 pr-4 text-xs text-[#2D2D2A]"
               />
-            </div>
+            </form>
 
             {navLinks.map((link, index) => (
               <Link
@@ -256,12 +276,14 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
                   setIsOpen(false);
                   setIsDropdownOpen(true);
                 }}
-                className="w-8 h-8 rounded-full overflow-hidden border border-[#F2E9DC]"
+                className="w-8 h-8 rounded-full overflow-hidden border border-[#F2E9DC] relative"
               >
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" 
                   alt="Avatar" 
-                  className="w-full h-full object-cover" 
+                  fill
+                  sizes="32px"
+                  className="object-cover" 
                 />
               </button>
             </div>
