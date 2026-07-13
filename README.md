@@ -148,6 +148,7 @@ re-wear/
 - 🌐 GitHub Repository: [https://github.com/waranon-sop/csi204-project](https://github.com/waranon-sop/csi204-project)
 - 🌐 GitHub Pages (Web): [https://waranon-sop.github.io/csi204-project/](https://waranon-sop.github.io/csi204-project/)
 - 📄 เอกสาร Analysis & Design: [docs/analysis-design.md](docs/analysis-design.md)
+- figma:[https://www.figma.com/design/1K2hJcSxbNVsy1EvjIkmAZ/Re-wear?node-id=0-1&p=f&t=ZE52yZWB8HONY6yu-0]
 
 ---
 
