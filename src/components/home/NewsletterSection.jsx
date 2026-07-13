@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { Leaf, CheckCircle2 } from 'lucide-react';
 
@@ -59,3 +61,4 @@ export default function NewsletterSection() {
     </section>
   );
 }
+

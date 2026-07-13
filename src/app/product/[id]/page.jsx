@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { Heart, RefreshCcw, ShieldCheck, Shirt, MapPin } from 'lucide-react';
-import { mockProducts } from '../data/products';
-import AnimatedPage from '../components/AnimatedPage';
-import { useCart } from '../context/CartContext';
+import { mockProducts } from '../../../data/products';
+import AnimatedPage from '../../../components/AnimatedPage';
+import { useCart } from '../../../context/CartContext';
 
 export default function ProductDetail() {
   const { id } = useParams();

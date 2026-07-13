@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import BannerTicker from '../components/home/BannerTicker';
 import HeroSection from '../components/home/HeroSection';

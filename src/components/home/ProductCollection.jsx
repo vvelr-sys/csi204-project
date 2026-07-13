@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState, useMemo } from 'react';
 import { Eye, Leaf } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { mockProducts } from '../../data/products';
 import QuickViewModal from './QuickViewModal';
@@ -74,7 +76,7 @@ export default function ProductCollection() {
         >
           {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={itemVariants} className="flex flex-col space-y-4 group relative">
-              <Link to={`/product/${product.id}`} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#FAF7F2] border border-[#EAE5DB]/60 shadow-premium block cursor-pointer">
+              <Link href={`/product/${product.id}`} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#FAF7F2] border border-[#EAE5DB]/60 shadow-premium block cursor-pointer">
                 <img
                   src={product.image}
                   alt={product.title}
@@ -110,7 +112,7 @@ export default function ProductCollection() {
 
               <div className="flex justify-between items-start pt-1 font-sans">
                 <div className="space-y-1">
-                  <Link to={`/product/${product.id}`} className="block">
+                  <Link href={`/product/${product.id}`} className="block">
                     <h3 className="font-semibold text-base text-[#2D2D2A] leading-snug group-hover:text-primary transition-colors">
                       {product.title}
                     </h3>
@@ -144,3 +146,4 @@ export default function ProductCollection() {
     </>
   );
 }
+

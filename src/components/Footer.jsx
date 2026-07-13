@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 export default function Footer() {
@@ -10,7 +10,7 @@ export default function Footer() {
           
           {/* Logo & Intro */}
           <div className="md:col-span-4 lg:col-span-3 space-y-6">
-            <Link to="/" className="font-serif text-2xl font-bold tracking-tight text-[#4A543C]">
+            <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-[#4A543C]">
               Re-Wear
             </Link>
             <p className="text-[11px] text-[#5C5C5A] leading-relaxed max-w-[260px] font-medium pr-4">

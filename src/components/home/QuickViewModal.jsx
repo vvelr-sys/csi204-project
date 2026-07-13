@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { X, Check, ShoppingBag, Heart, Leaf, ShieldCheck } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
@@ -167,3 +169,4 @@ export default function QuickViewModal({
     </div>
   );
 }
+

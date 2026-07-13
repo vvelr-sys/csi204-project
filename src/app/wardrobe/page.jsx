@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import { Heart, Plus, Leaf, Eye, Trash2, Tag, Shirt } from 'lucide-react';
 
 const mockSavedItems = [

@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { User, History, CreditCard, Heart, Leaf, LogOut } from 'lucide-react';
 
 // Avatar URLs keyed by role — mirrors the values used in Navbar & ProfileDropdown
@@ -16,7 +19,7 @@ const ROLE_AVATARS = {
 const DEFAULT_USER = { name: 'Alex Rivers', role: 'customer' };
 
 export default function Sidebar({ currentUser = DEFAULT_USER }) {
-  const location = useLocation();
+  const pathname = usePathname();
 
   const menuItems = [
     {
@@ -51,7 +54,7 @@ export default function Sidebar({ currentUser = DEFAULT_USER }) {
     },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => pathname === path;
   const avatarSrc = ROLE_AVATARS[currentUser.role] ?? ROLE_AVATARS.customer;
 
   return (
@@ -79,7 +82,7 @@ export default function Sidebar({ currentUser = DEFAULT_USER }) {
           return (
             <Link
               key={item.path}
-              to={item.path}
+              href={item.path}
               className={`flex items-center gap-3.5 px-4 py-3.5 rounded-xl transition-all group ${
                 active
                   ? 'bg-sage-50 border-l-4 border-sage-600 text-sage-800 font-semibold'

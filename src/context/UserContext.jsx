@@ -8,6 +8,8 @@
  *   const { currentUser } = useCurrentUser();
  */
 
+"use client";
+
 import React, { createContext, useContext } from 'react';
 
 const UserContext = createContext(null);

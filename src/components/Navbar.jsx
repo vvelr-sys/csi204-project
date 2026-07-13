@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Search, Menu, X, ShieldAlert, Cpu } from 'lucide-react';
 import ProfileDropdown from './ProfileDropdown';
 import { mockProducts } from '../data/products';
@@ -11,10 +14,10 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchRef = useRef(null);
-  const location = useLocation();
+  const pathname = usePathname();
   const { cartItems, toggleCart } = useCart();
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => pathname === path;
 
   // Close search dropdown when clicking outside
   useEffect(() => {
@@ -88,7 +91,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
           
           {/* Logo - Serif Font Eb Garamond */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="font-serif text-2xl font-semibold text-[#2D2D2A] tracking-tight hover:opacity-90 transition-opacity">
+            <Link href="/" className="font-serif text-2xl font-semibold text-[#2D2D2A] tracking-tight hover:opacity-90 transition-opacity">
               Re-Wear
             </Link>
           </div>
@@ -98,7 +101,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
             {navLinks.map((link, index) => {
               const isExternal = link.path === '#';
               const LinkComponent = isExternal ? 'a' : Link;
-              const linkProps = isExternal ? { href: '#' } : { to: link.path };
+              const linkProps = isExternal ? { href: '#' } : { href: link.path };
               return (
                 <LinkComponent
                   key={index}
@@ -140,7 +143,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
                       {searchResults.map(p => (
                         <Link 
                           key={p.id} 
-                          to={`/product/${p.id}`}
+                          href={`/product/${p.id}`}
                           onClick={() => {
                             setIsSearchFocused(false);
                             setSearchQuery('');
@@ -234,7 +237,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
             {navLinks.map((link, index) => (
               <Link
                 key={index}
-                to={link.path}
+                href={link.path}
                 onClick={() => setIsOpen(false)}
                 className={`block px-3 py-2 rounded-lg text-sm font-semibold ${
                   isActive(link.path) && link.path !== '#' ? 'bg-[#F2E9DC]/40 text-[#2D2D2A]' : 'text-[#8B8B88]'

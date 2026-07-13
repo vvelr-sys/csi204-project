@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import { CreditCard, Plus, Trash2, CheckCircle, ShieldCheck } from 'lucide-react';
 
 const mockPaymentMethods = [
