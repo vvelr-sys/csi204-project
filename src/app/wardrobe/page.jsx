@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Sidebar from '../../components/Sidebar';
 import { Heart, Plus, Leaf, Eye, Trash2, Tag, Shirt } from 'lucide-react';
 
@@ -102,8 +103,8 @@ export default function MyWardrobe() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {savedItems.map((item) => (
                     <div key={item.id} className="flex gap-4 p-4 border border-earth-200 rounded-2xl bg-earth-50/20">
-                      <div className="w-20 h-20 bg-earth-100 rounded-xl overflow-hidden flex-shrink-0">
-                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                      <div className="relative w-20 h-20 bg-earth-100 rounded-xl overflow-hidden flex-shrink-0">
+                        <Image src={item.image} alt={item.title} fill sizes="80px" className="object-cover" />
                       </div>
                       <div className="flex-1 flex flex-col justify-between min-w-0">
                         <div>
@@ -151,8 +152,8 @@ export default function MyWardrobe() {
                   {myListings.map((listing) => (
                     <div key={listing.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border border-earth-200 rounded-2xl bg-earth-50/20">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-earth-100 rounded-xl overflow-hidden flex-shrink-0">
-                          <img src={listing.image} alt={listing.title} className="w-full h-full object-cover" />
+                        <div className="relative w-16 h-16 bg-earth-100 rounded-xl overflow-hidden flex-shrink-0">
+                          <Image src={listing.image} alt={listing.title} fill sizes="64px" className="object-cover" />
                         </div>
                         <div>
                           <h3 className="font-semibold text-sm text-earth-800">{listing.title}</h3>

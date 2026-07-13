@@ -18,9 +18,9 @@ const UserContext = createContext(null);
  * Wrap the app (or a sub-tree) with this provider and supply the currentUser
  * state from App.jsx.
  */
-export function UserProvider({ currentUser, children }) {
+export function UserProvider({ currentUser, setCurrentUser, children }) {
   return (
-    <UserContext.Provider value={{ currentUser }}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </UserContext.Provider>
   );

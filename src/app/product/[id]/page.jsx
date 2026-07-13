@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, RefreshCcw, ShieldCheck, Shirt, MapPin } from 'lucide-react';
 import { mockProducts } from '../../../data/products';
 import AnimatedPage from '../../../components/AnimatedPage';
@@ -42,7 +43,7 @@ export default function ProductDetail() {
       {/* ── Breadcrumb ── */}
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8">
         <nav className="flex text-[10px] font-semibold text-[#8B8B88] uppercase tracking-widest gap-2">
-          <Link to="/" className="hover:text-[#2D2D2A] transition-colors">Archive</Link>
+          <Link href="/" className="hover:text-[#2D2D2A] transition-colors">Archive</Link>
           <span>›</span>
           <span>{categoryStr}</span>
           <span>›</span>
@@ -57,22 +58,22 @@ export default function ProductDetail() {
         <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 h-[600px] lg:h-[700px]">
           {/* Thumbnails */}
           <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-visible shrink-0">
-            {[product.hoverImage, product.image, product.image].map((imgUrl, idx) => (
+            {[product.hoverImage, product.image].map((imgUrl, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveImage(imgUrl)}
-                className={`w-20 md:w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all ${
+                className={`w-20 md:w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all relative ${
                   activeImage === imgUrl ? 'border-[#5F6B4E]' : 'border-transparent hover:border-[#EAE5DB]'
                 }`}
               >
-                <img src={imgUrl} alt="thumbnail" className="w-full h-full object-cover" />
+                <Image src={imgUrl} alt="thumbnail" fill sizes="96px" className="object-cover" />
               </button>
             ))}
           </div>
 
           {/* Main Image */}
           <div className="relative flex-grow bg-[#EAE5DB]/30 rounded-[2rem] overflow-hidden">
-            <img src={activeImage} alt={product.title} className="w-full h-full object-cover mix-blend-multiply" />
+            <Image src={activeImage} alt={product.title} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover mix-blend-multiply" />
             <div className="absolute top-6 left-6 flex flex-col gap-2">
               <span className="text-[9px] font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full bg-[#5F6B4E] text-[#FAF8F5] shadow-sm w-fit">
                 ONE OF ONE
@@ -139,14 +140,23 @@ export default function ProductDetail() {
           <hr className="border-[#F2E9DC]" />
 
           {/* Vintage Principle: Precise Measurements instead of Size Selector */}
-          <div className="space-y-3 bg-[#FAF7F2] p-5 rounded-2xl border border-[#F2E9DC]/60">
-            <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#2D2D2A] uppercase">
-              MEASUREMENTS (INCHES)
-            </h3>
-            <p className="text-xs text-[#2D2D2A] font-medium tracking-wide">
-              {product.measurements}
-            </p>
-            <p className="text-[9px] text-[#8B8B88] italic">
+          <div className="space-y-4 bg-[#FAF7F2] p-5 rounded-2xl border border-[#F2E9DC]/60">
+            <div className="flex items-center gap-2">
+              <Shirt className="h-3.5 w-3.5 text-[#8B8B88]" />
+              <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#2D2D2A] uppercase">Measurements (Inches)</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {product.measurements.split(',').map((m, i) => {
+                const [label, value] = m.trim().split(':');
+                return (
+                  <div key={i} className="flex flex-col items-center bg-white rounded-xl p-3 border border-[#F2E9DC] gap-1">
+                    <span className="text-[11px] font-bold text-[#2D2D2A]">{value?.trim() ?? label.trim()}</span>
+                    {value && <span className="text-[9px] text-[#8B8B88] uppercase tracking-widest">{label.trim()}</span>}
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-[9px] text-[#8B8B88] italic leading-relaxed">
               * Please compare these measurements to a similar garment you already own.
             </p>
           </div>
@@ -194,19 +204,21 @@ export default function ProductDetail() {
             <h2 className="font-serif text-3xl font-bold text-[#4A543C]">Curated for You</h2>
             <p className="text-xs text-[#8B8B88] mt-2">Similar silhouettes from the Re-Wear archive.</p>
           </div>
-          <Link to="/" className="text-[10px] font-bold uppercase tracking-widest text-[#2D2D2A] border-b border-[#2D2D2A] pb-0.5 hover:text-[#5F6B4E] hover:border-[#5F6B4E] transition-colors">
+          <Link href="/" className="text-[10px] font-bold uppercase tracking-widest text-[#2D2D2A] border-b border-[#2D2D2A] pb-0.5 hover:text-[#5F6B4E] hover:border-[#5F6B4E] transition-colors">
             View Collection
           </Link>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {curatedProducts.map((p) => (
-            <Link to={`/product/${p.id}`} key={p.id} className="group cursor-pointer">
-              <div className="aspect-square bg-[#EAE5DB]/40 rounded-3xl overflow-hidden mb-4">
-                <img 
+            <Link href={`/product/${p.id}`} key={p.id} className="group cursor-pointer">
+              <div className="relative aspect-square bg-[#EAE5DB]/40 rounded-3xl overflow-hidden mb-4">
+                <Image 
                   src={p.image} 
                   alt={p.title} 
-                  className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-in-out" 
                 />
               </div>
               <h3 className="font-serif text-sm font-semibold text-[#4A543C] group-hover:text-[#5F6B4E] transition-colors line-clamp-1">{p.title}</h3>

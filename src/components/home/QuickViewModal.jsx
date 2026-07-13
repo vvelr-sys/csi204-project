@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Check, ShoppingBag, Heart, Leaf, ShieldCheck } from 'lucide-react';
+import Image from 'next/image';
 import { useCart } from '../../context/CartContext';
+import { useCurrentUser } from '../../context/UserContext';
 
 export default function QuickViewModal({
   selectedProduct,
@@ -10,6 +12,7 @@ export default function QuickViewModal({
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const { addToCart, cartItems } = useCart();
+  const { currentUser } = useCurrentUser();
 
   const isAdded = cartItems.some((item) => item.id === selectedProduct?.id);
 
@@ -34,10 +37,12 @@ export default function QuickViewModal({
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Left Column: Product Images */}
           <div className="relative aspect-[4/5] bg-tertiary/40">
-            <img
+            <Image
               src={selectedProduct.hoverImage}
               alt={selectedProduct.title}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
             {selectedProduct.badge && (
               <span className="absolute top-6 left-6 text-[9px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full bg-white/95 text-[#2D2D2A] border border-[#EAE5DB]/65">
@@ -120,32 +125,34 @@ export default function QuickViewModal({
 
             {/* Add to Cart Actions */}
             <div className="pt-2 flex gap-3">
-              <button
-                disabled={isAdded}
-                onClick={() => {
-                  if (!isAdded) {
-                    addToCart(selectedProduct);
-                    setSelectedProduct(null);
-                  }
-                }}
-                className={`flex-1 py-3.5 px-6 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
-                  isAdded
-                    ? 'bg-sage-600 text-white'
-                    : 'btn-slide-primary bg-primary text-white shadow-md'
-                }`}
-              >
-                {isAdded ? (
-                  <>
-                    <Check className="h-4 w-4" />
-                    Added to Cart!
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="h-4 w-4" />
-                    Add to Bag
-                  </>
-                )}
-              </button>
+              {currentUser?.role === 'customer' && (
+                <button
+                  disabled={isAdded}
+                  onClick={() => {
+                    if (!isAdded) {
+                      addToCart(selectedProduct);
+                      setSelectedProduct(null);
+                    }
+                  }}
+                  className={`flex-1 py-3.5 px-6 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                    isAdded
+                      ? 'bg-sage-600 text-white'
+                      : 'btn-slide-primary bg-primary text-white shadow-md'
+                  }`}
+                >
+                  {isAdded ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      Added to Cart!
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="h-4 w-4" />
+                      Add to Bag
+                    </>
+                  )}
+                </button>
+              )}
               <button 
                 onClick={() => setIsLiked(!isLiked)}
                 className={`p-3.5 border rounded-xl transition-all ${
