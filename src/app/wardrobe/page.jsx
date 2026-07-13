@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import { Heart, Plus, Leaf, Eye, Trash2, Tag, Shirt } from 'lucide-react';
 
 const mockSavedItems = [
@@ -37,7 +39,7 @@ const mockMyListings = [
 export default function MyWardrobe() {
   const [activeTab, setActiveTab] = useState('saved'); // 'saved' or 'listings'
   const [savedItems, setSavedItems] = useState(mockSavedItems);
-  const [myListings, setMyListings] = useState(mockMyListings);
+  const [myListings] = useState(mockMyListings);
 
   const removeItem = (id) => {
     setSavedItems(savedItems.filter(item => item.id !== id));

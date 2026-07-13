@@ -1,6 +1,8 @@
+"use client";
+
 import React from 'react';
-import Sidebar from '../components/Sidebar';
-import { Leaf, Award, Gift, HelpCircle, Flame, Droplet, TreePine } from 'lucide-react';
+import Sidebar from '../../components/Sidebar';
+import { Leaf, Award, Gift, Flame, Droplet, TreePine } from 'lucide-react';
 
 const mockRewards = [
   {

@@ -1,16 +1,11 @@
+"use client";
+
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import ProfileSettings from './pages/ProfileSettings';
-import OrderHistory from './pages/OrderHistory';
-import MyWardrobe from './pages/MyWardrobe';
-import EcoImpact from './pages/EcoImpact';
-import PaymentMethods from './pages/PaymentMethods';
+import { UserProvider } from '../context/UserContext';
+import { CartProvider } from '../context/CartContext';
 import { User, ShieldAlert, Cpu } from 'lucide-react';
 
-export default function App() {
+export default function Providers({ children }) {
   // Mock User State to demonstrate SAD system design roles
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Rivers',
@@ -18,26 +13,10 @@ export default function App() {
   });
 
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-[#FAF8F5]">
-        {/* Pass user state to Navbar to dynamically show different menus */}
-        <Navbar currentUser={currentUser} />
-
-        {/* Main Content Area */}
-        <main className="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<ProfileSettings />} />
-            <Route path="/orders" element={<OrderHistory />} />
-            <Route path="/wardrobe" element={<MyWardrobe />} />
-            <Route path="/eco-impact" element={<EcoImpact />} />
-            <Route path="/payment" element={<PaymentMethods />} />
-          </Routes>
-        </main>
-
-        {/* Footer */}
-        <Footer />
-
+    <CartProvider>
+      <UserProvider currentUser={currentUser}>
+        {children}
+        
         {/* ==================== Interactive SAD Demo Role Switcher ==================== */}
         <div className="fixed bottom-6 right-6 z-50 bg-[#FCFBF7] border border-[#F2E9DC] p-4 rounded-3xl shadow-2xl max-w-[260px] font-sans text-[#2D2D2A]">
           <div className="flex items-center gap-2 mb-2 pb-1.5 border-b border-[#F2E9DC]">
@@ -83,7 +62,7 @@ export default function App() {
             </button>
           </div>
         </div>
-      </div>
-    </Router>
+      </UserProvider>
+    </CartProvider>
   );
 }

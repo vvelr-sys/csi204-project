@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Settings, History, Heart, Leaf, LogOut, ShieldAlert, Cpu } from 'lucide-react';
 
 export default function ProfileDropdown({ isOpen, onClose, currentUser = { name: 'Alex Rivers', role: 'customer' } }) {
@@ -97,7 +99,7 @@ export default function ProfileDropdown({ isOpen, onClose, currentUser = { name:
           return (
             <Link
               key={index}
-              to={item.path}
+              href={item.path}
               onClick={onClose}
               className="flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-[#F2E9DC]/40 text-[#2D2D2A] transition-all group text-left"
             >
@@ -121,3 +123,4 @@ export default function ProfileDropdown({ isOpen, onClose, currentUser = { name:
     </div>
   );
 }
+

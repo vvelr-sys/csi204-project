@@ -1,14 +1,42 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Search, Menu, X, ShieldAlert, Cpu } from 'lucide-react';
 import ProfileDropdown from './ProfileDropdown';
+import { mockProducts } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'customer' } }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchRef = useRef(null);
+  const pathname = usePathname();
+  const { cartItems, toggleCart } = useCart();
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => pathname === path;
+
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const searchResults = searchQuery.trim() 
+    ? mockProducts.filter(p => 
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.brandCategory.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 4)
+    : [];
 
   // Determine navigation menu links dynamically based on user role (SAD Design)
   const getNavLinks = () => {
@@ -63,7 +91,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
           
           {/* Logo - Serif Font Eb Garamond */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="font-serif text-2xl font-semibold text-[#2D2D2A] tracking-tight hover:opacity-90 transition-opacity">
+            <Link href="/" className="font-serif text-2xl font-semibold text-[#2D2D2A] tracking-tight hover:opacity-90 transition-opacity">
               Re-Wear
             </Link>
           </div>
@@ -73,7 +101,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
             {navLinks.map((link, index) => {
               const isExternal = link.path === '#';
               const LinkComponent = isExternal ? 'a' : Link;
-              const linkProps = isExternal ? { href: '#' } : { to: link.path };
+              const linkProps = isExternal ? { href: '#' } : { href: link.path };
               return (
                 <LinkComponent
                   key={index}
@@ -93,23 +121,64 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
           {/* Desktop Search & Icons */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Search Bar */}
-            <div className="relative">
+            <div className="relative" ref={searchRef}>
               <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#8B8B88]" />
               <input
                 type="text"
                 placeholder="Search unique pieces..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
                 className="w-56 bg-[#F2E9DC] border border-[#F2E9DC] hover:border-[#E2D5C4] focus:border-[#2D2D2A] focus:bg-[#FAF8F5] focus:outline-none rounded-full py-1.5 pl-10 pr-4 text-xs text-[#2D2D2A] transition-all placeholder:text-[#8B8B88] font-sans"
               />
+              
+              {/* Search Results Dropdown */}
+              {isSearchFocused && searchQuery && (
+                <div className="absolute top-full mt-2 w-72 right-0 bg-[#FCFBF7] border border-[#F2E9DC] rounded-2xl shadow-2xl overflow-hidden z-50 animate-fade-up">
+                  {searchResults.length > 0 ? (
+                    <div className="max-h-80 overflow-y-auto p-2">
+                      <div className="px-3 py-2 text-[9px] font-bold text-[#8B8B88] uppercase tracking-widest border-b border-[#F2E9DC] mb-1">
+                        Matches
+                      </div>
+                      {searchResults.map(p => (
+                        <Link 
+                          key={p.id} 
+                          href={`/product/${p.id}`}
+                          onClick={() => {
+                            setIsSearchFocused(false);
+                            setSearchQuery('');
+                          }}
+                          className="flex items-center gap-3 p-2 hover:bg-[#F2E9DC]/60 rounded-xl transition-colors group"
+                        >
+                          <img src={p.image} alt={p.title} className="w-10 h-10 rounded-lg object-cover mix-blend-multiply bg-[#EAE5DB]" />
+                          <div>
+                            <p className="text-xs font-semibold text-[#2D2D2A] line-clamp-1 group-hover:text-[#4A543C]">{p.title}</p>
+                            <p className="text-[10px] text-[#8B8B88] font-bold">${p.price}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-xs text-[#8B8B88]">
+                      No pieces found for "{searchQuery}"
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Shopping Cart Icon (Only relevant for Customer) */}
             {currentUser.role === 'customer' && (
-              <Link to="/wardrobe" className="text-[#2D2D2A] hover:text-[#5F6B4E] transition-colors relative">
+              <button onClick={toggleCart} className="text-[#2D2D2A] hover:text-[#5F6B4E] transition-colors relative focus:outline-none">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                 </svg>
-                <span className="absolute -top-1.5 -right-1.5 bg-[#5F6B4E] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
-              </Link>
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#5F6B4E] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
+                    {cartItems.length}
+                  </span>
+                )}
+              </button>
             )}
 
             {/* Profile Avatar Trigger */}
@@ -168,7 +237,7 @@ export default function Navbar({ currentUser = { name: 'Alex Rivers', role: 'cus
             {navLinks.map((link, index) => (
               <Link
                 key={index}
-                to={link.path}
+                href={link.path}
                 onClick={() => setIsOpen(false)}
                 className={`block px-3 py-2 rounded-lg text-sm font-semibold ${
                   isActive(link.path) && link.path !== '#' ? 'bg-[#F2E9DC]/40 text-[#2D2D2A]' : 'text-[#8B8B88]'

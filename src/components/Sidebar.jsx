@@ -1,9 +1,25 @@
+"use client";
+
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { User, History, CreditCard, Heart, Leaf, LogOut } from 'lucide-react';
 
-export default function Sidebar() {
-  const location = useLocation();
+// Avatar URLs keyed by role — mirrors the values used in Navbar & ProfileDropdown
+const ROLE_AVATARS = {
+  customer:
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100',
+  staff:
+    'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=100',
+  admin:
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100',
+};
+
+// Default customer persona — matches the initial state in App.jsx
+const DEFAULT_USER = { name: 'Alex Rivers', role: 'customer' };
+
+export default function Sidebar({ currentUser = DEFAULT_USER }) {
+  const pathname = usePathname();
 
   const menuItems = [
     {
@@ -38,21 +54,22 @@ export default function Sidebar() {
     },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => pathname === path;
+  const avatarSrc = ROLE_AVATARS[currentUser.role] ?? ROLE_AVATARS.customer;
 
   return (
     <aside className="bg-white rounded-2xl border border-earth-200/60 p-5 shadow-sm space-y-6">
-      {/* Quick Profile Summary */}
+      {/* Quick Profile Summary — driven by currentUser prop */}
       <div className="flex items-center gap-4 pb-5 border-b border-earth-100">
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-sage-500/20">
           <img 
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" 
-            alt="User avatar" 
+            src={avatarSrc} 
+            alt={`${currentUser.name} avatar`} 
             className="w-full h-full object-cover"
           />
         </div>
         <div>
-          <h2 className="font-semibold text-earth-800 text-sm">พิมพ์ชนก สุขใจ</h2>
+          <h2 className="font-semibold text-earth-800 text-sm">{currentUser.name}</h2>
           <p className="text-xs text-sage-600 font-medium">สมาชิกระดับ Eco Hero</p>
         </div>
       </div>
@@ -65,7 +82,7 @@ export default function Sidebar() {
           return (
             <Link
               key={item.path}
-              to={item.path}
+              href={item.path}
               className={`flex items-center gap-3.5 px-4 py-3.5 rounded-xl transition-all group ${
                 active
                   ? 'bg-sage-50 border-l-4 border-sage-600 text-sage-800 font-semibold'

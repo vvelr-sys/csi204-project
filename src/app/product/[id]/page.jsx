@@ -1,0 +1,220 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { Heart, RefreshCcw, ShieldCheck, Shirt, MapPin } from 'lucide-react';
+import { mockProducts } from '../../../data/products';
+import AnimatedPage from '../../../components/AnimatedPage';
+import { useCart } from '../../../context/CartContext';
+
+export default function ProductDetail() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [activeImage, setActiveImage] = useState('');
+  const [isLiked, setIsLiked] = useState(false);
+  const { cartItems, addToCart } = useCart();
+
+  useEffect(() => {
+    // Scroll to top on mount/id change
+    window.scrollTo(0, 0);
+    // Find product or default to first
+    const found = mockProducts.find((p) => p.id === parseInt(id)) || mockProducts[0];
+    setProduct(found);
+    setActiveImage(found.hoverImage || found.image);
+    setIsLiked(false);
+  }, [id]);
+
+  if (!product) return null;
+
+  const isAdded = cartItems.some((item) => item.id === product.id);
+
+  // Derive some dynamic specs (or use defaults if missing)
+  const categorySplit = product.brandCategory.split(' • ');
+  const categoryStr = categorySplit[0] || 'Archive';
+  const subCategoryStr = categorySplit[1] || 'Outerwear';
+
+  // Get 4 random products for "Curated for You"
+  const curatedProducts = mockProducts.filter((p) => p.id !== product.id).slice(0, 4);
+
+  return (
+    <AnimatedPage className="bg-[#FAF8F5] min-h-screen font-sans text-[#2D2D2A] pb-24">
+      {/* ── Breadcrumb ── */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8">
+        <nav className="flex text-[10px] font-semibold text-[#8B8B88] uppercase tracking-widest gap-2">
+          <Link to="/" className="hover:text-[#2D2D2A] transition-colors">Archive</Link>
+          <span>›</span>
+          <span>{categoryStr}</span>
+          <span>›</span>
+          <span className="text-[#2D2D2A]">{product.title}</span>
+        </nav>
+      </div>
+
+      {/* ── Top Section: Image & Details ── */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        
+        {/* Left: Image Gallery */}
+        <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 h-[600px] lg:h-[700px]">
+          {/* Thumbnails */}
+          <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-visible shrink-0">
+            {[product.hoverImage, product.image, product.image].map((imgUrl, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveImage(imgUrl)}
+                className={`w-20 md:w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all ${
+                  activeImage === imgUrl ? 'border-[#5F6B4E]' : 'border-transparent hover:border-[#EAE5DB]'
+                }`}
+              >
+                <img src={imgUrl} alt="thumbnail" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+
+          {/* Main Image */}
+          <div className="relative flex-grow bg-[#EAE5DB]/30 rounded-[2rem] overflow-hidden">
+            <img src={activeImage} alt={product.title} className="w-full h-full object-cover mix-blend-multiply" />
+            <div className="absolute top-6 left-6 flex flex-col gap-2">
+              <span className="text-[9px] font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full bg-[#5F6B4E] text-[#FAF8F5] shadow-sm w-fit">
+                ONE OF ONE
+              </span>
+              <span className="text-[9px] font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full bg-white text-[#2D2D2A] shadow-sm w-fit border border-[#EAE5DB]/65">
+                ECO-CERTIFIED
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Details */}
+        <div className="lg:col-span-5 flex flex-col justify-center space-y-8">
+          <div className="space-y-3">
+            <h1 className="font-serif text-4xl lg:text-5xl font-semibold leading-tight text-[#4A543C]">
+              {product.title}
+            </h1>
+            <p className="font-serif text-2xl font-bold text-[#8B6B57]">
+              ${product.price}.00
+            </p>
+          </div>
+
+          {/* Condition Pill & Era */}
+          <div className="flex items-center gap-4 border-b border-[#F2E9DC] pb-6">
+            <div className="flex items-center gap-2 bg-[#F2E9DC]/60 px-4 py-2 rounded-full border border-[#E2D5C4]/60">
+              <ShieldCheck className="h-4 w-4 text-[#C57B57]" />
+              <span className="text-[11px] font-bold text-[#8B6B57]">Condition: {product.condition}</span>
+            </div>
+            <span className="text-[10px] text-[#8B8B88] font-light">
+              Circa 1990s
+            </span>
+          </div>
+
+          {/* Story & Details */}
+          <div className="space-y-4">
+            <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#2D2D2A] uppercase">
+              STORY & DETAILS
+            </h3>
+            <p className="text-xs text-[#5C5C5A] leading-relaxed font-light">
+              {product.description}
+            </p>
+          </div>
+
+          {/* Specs Grid */}
+          <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-[11px] text-[#5C5C5A] py-2">
+            <div className="flex items-center gap-2.5">
+              <RefreshCcw className="h-4 w-4 shrink-0 text-[#8B8B88]" />
+              <span>100% Repurposed Material</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Shirt className="h-4 w-4 shrink-0 text-[#8B8B88]" />
+              <span>Professionally Cleaned</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-xs font-bold text-[#8B8B88] w-4 text-center">T</span>
+              <span>Size: {product.size}</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <MapPin className="h-4 w-4 shrink-0 text-[#8B8B88]" />
+              <span>Sourced: Tokyo, Japan</span>
+            </div>
+          </div>
+          
+          <hr className="border-[#F2E9DC]" />
+
+          {/* Vintage Principle: Precise Measurements instead of Size Selector */}
+          <div className="space-y-3 bg-[#FAF7F2] p-5 rounded-2xl border border-[#F2E9DC]/60">
+            <h3 className="text-[10px] font-bold tracking-[0.2em] text-[#2D2D2A] uppercase">
+              MEASUREMENTS (INCHES)
+            </h3>
+            <p className="text-xs text-[#2D2D2A] font-medium tracking-wide">
+              {product.measurements}
+            </p>
+            <p className="text-[9px] text-[#8B8B88] italic">
+              * Please compare these measurements to a similar garment you already own.
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="space-y-4 pt-2">
+            <div className="flex gap-4">
+              <button 
+                onClick={() => addToCart(product)}
+                disabled={isAdded}
+                className={`flex-1 py-4 px-6 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all shadow-md flex justify-center items-center gap-2 ${
+                  isAdded ? 'bg-sage-600 text-white' : 'bg-[#4A543C] hover:bg-[#3A432F] text-white'
+                }`}
+              >
+                {isAdded ? 'ADDED TO ARCHIVE' : 'ADD TO CART'}
+              </button>
+              <button 
+                onClick={() => setIsLiked(!isLiked)}
+                className={`p-4 rounded-xl border transition-all ${
+                  isLiked ? 'border-clay-400 bg-clay-50' : 'border-[#EAE5DB] hover:border-clay bg-white'
+                }`}
+              >
+                <Heart className={`h-4 w-4 ${isLiked ? 'fill-current text-clay-600' : 'text-[#8B8B88]'}`} />
+              </button>
+            </div>
+            
+            <div className="flex items-center justify-between text-[9px] text-[#8B8B88] font-medium">
+              <div className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                Carbon-Neutral Shipping
+              </div>
+              <div className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                14-Day Boutique Returns
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bottom Section: Curated for You ── */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-8 mt-32 border-t border-[#F2E9DC] pt-20">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <h2 className="font-serif text-3xl font-bold text-[#4A543C]">Curated for You</h2>
+            <p className="text-xs text-[#8B8B88] mt-2">Similar silhouettes from the Re-Wear archive.</p>
+          </div>
+          <Link to="/" className="text-[10px] font-bold uppercase tracking-widest text-[#2D2D2A] border-b border-[#2D2D2A] pb-0.5 hover:text-[#5F6B4E] hover:border-[#5F6B4E] transition-colors">
+            View Collection
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {curatedProducts.map((p) => (
+            <Link to={`/product/${p.id}`} key={p.id} className="group cursor-pointer">
+              <div className="aspect-square bg-[#EAE5DB]/40 rounded-3xl overflow-hidden mb-4">
+                <img 
+                  src={p.image} 
+                  alt={p.title} 
+                  className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+                />
+              </div>
+              <h3 className="font-serif text-sm font-semibold text-[#4A543C] group-hover:text-[#5F6B4E] transition-colors line-clamp-1">{p.title}</h3>
+              <p className="font-serif text-sm font-bold text-[#8B6B57] mt-1">${p.price}.00</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </AnimatedPage>
+  );
+}

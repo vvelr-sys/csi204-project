@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import { User, Mail, Phone, MapPin, Shield, Check } from 'lucide-react';
 
 export default function ProfileSettings() {
